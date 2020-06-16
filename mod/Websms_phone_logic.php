@@ -20,6 +20,8 @@ class PhoneLogic extends LogicInterface
 		//$content = array_key_exists('status',$content) ? $content['status'] : '';//commented 17-07-2019
 		$status = array_key_exists('status',$content) ? $content['status'] : '';//added 17-07-2019
 		//switch ($content) //commented 17-07-2019
+		//
+		
 		switch ($status) 
 		{
 			case 'success':

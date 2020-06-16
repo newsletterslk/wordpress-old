@@ -32,19 +32,27 @@ class Newsletterslk {
     /**
      * Call to site
      */
-    private function Call($params){ print_r($params);
+    private function Call($params){ 
         if($params){ 
-            $params = str_replace(" ", '%20', $params);
-            $curl_handle=curl_init();
-            curl_setopt($curl_handle,CURLOPT_URL,$this->url.$params);
-            curl_setopt($curl_handle,CURLOPT_CONNECTTIMEOUT,2);
-            curl_setopt($curl_handle,CURLOPT_RETURNTRANSFER,1);
-            $buffer = curl_exec($curl_handle);
-            curl_close($curl_handle);
-            if($buffer){ 
-                return $buffer;
+            if(phpversion() < "7.2"){
+                $params = str_replace(" ", '%20', $params);
+                $curl_handle=curl_init();
+                curl_setopt($curl_handle,CURLOPT_URL,$this->url.$params);
+                curl_setopt($curl_handle,CURLOPT_CONNECTTIMEOUT,2);
+                curl_setopt($curl_handle,CURLOPT_RETURNTRANSFER,1);
+                $buffer = curl_exec($curl_handle);
+                curl_close($curl_handle);
+                if($buffer){ 
+                    return $buffer;
+                }else{
+                    return false;
+                }
             }else{
-                return false;
+                if($res=file_get_contents($this->url.$params)){
+                    return $res;
+                }else{
+                    return false;
+                }
             }
         }else{
             return false;

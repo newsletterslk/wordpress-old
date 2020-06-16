@@ -68,7 +68,10 @@
 		
 		$otp_token 		= !WebsmsUtility::isBlank($_REQUEST[$requestVariable])? $_REQUEST[$requestVariable] : null;
 	
-		$content = json_decode(WebsmscURLOTP::validate_otp_token($phone_number, $otp_token),true);
+		$content = json_decode(WebsmscURLOTP::validate_otp_token($phone_number, $otp_token),true);//print_r($content);exit;
+		if($content['status']=='success'){
+			_handle_success_validated($user_login,$user_email,$password,$phone_number,$extra_data);
+		}
 		if($content['status']=='success' && isset($content['description']['desc']) && strcasecmp($content['description']['desc'], 'Code Matched successfully.') == 0) {
 			_handle_success_validated($user_login,$user_email,$password,$phone_number,$extra_data);
 		}else{
@@ -97,15 +100,16 @@
 	}
 
 	function _handle_mo_ajax_phone_validate($getdata)
-	{
-		WebsmsUtility::checkSession();
+	{ 
+		//WebsmsUtility::checkSession();
 		$_SESSION[FormSessionVars::AJAX_FORM] = trim($getdata['billing_phone']);
-		Websms_site_challenge_otp($_SESSION['user_login'],null,null, trim($data['billing_phone']),"phone",$_SESSION['user_password'],null, null);
+		Websms_site_challenge_otp($_SESSION['user_login'],null,null, trim($getdata['billing_phone']),"phone",$_SESSION['user_password'],null, null);
 	}
 	
 	function _handle_mo_ajax_form_validate_action()
-	{
+	{  
 		WebsmsUtility::checkSession();
+		
 		if(isset($_SESSION[FormSessionVars::WC_SOCIAL_LOGIN]))
 		{
 			_handle_validation_form_action();
@@ -124,7 +128,8 @@
 	}
 
 	function Websms_customer_validation_handle_form()
-	{
+	{ 
+		
 		if(array_key_exists('option', $_REQUEST) && $_REQUEST['option'])
 		{
 			switch (trim($_REQUEST['option'])) 
@@ -132,11 +137,11 @@
 				case "validation_goBack":
 					_handle_validation_goBack_action();								break;
 				case "Websms-ajax-otp-generate":
-					_handle_mo_ajax_phone_validate($_GET);							break;
+					_handle_mo_ajax_phone_validate($_REQUEST);							break;
 				case "Websms-ajax-otp-validate":
-					_handle_mo_ajax_form_validate_action($_GET);					break;
+					_handle_mo_ajax_form_validate_action($_REQUEST);					break;
 				case "Websms_ajax_form_validate":
-					_handle_mo_create_user_wc_action($_POST);						break;
+					_handle_mo_create_user_wc_action($_REQUEST);						break;
 				case "Websms-validate-otp-form":
 					$from_both = $_POST['from_both']=='true' ? true : false;
 					_handle_validation_form_action();	break;

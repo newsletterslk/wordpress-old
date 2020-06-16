@@ -1,14 +1,14 @@
 <?php
 /*
  * Plugin Name: Websms.lk
- * Plugin URI: https://plugin.newsletters.lk
+ * Plugin URI: https://newsletters.lk
  * Description: SMS Solucation For Sri Lanka
- * Version: v1
+ * Version: 1.2
  * Author: SmarteWorks PVT 
  * Author URI: https://www.smarteworks.com
  * Text Domain: Websms.lk
- * WC requires at least: 2.0.0
- * WC tested up to: 3.8.0
+ * WC requires at least: 5.1.0
+ * WC tested up to: 5.4.0
  * License: GPL2
  */
 
